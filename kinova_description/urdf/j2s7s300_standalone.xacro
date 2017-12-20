@@ -28,12 +28,12 @@
     <!--<material name="Black" /> -->
     </visual>
 
-    <collision>
+		<!--collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <box size = "0.01 0.01 0.01"/> 
+        <box size = "0.01 0.01 0.01"/>
       </geometry>
-    </collision>
+    </collision-->
   </link>
 
   <!-- for gazebo -->
