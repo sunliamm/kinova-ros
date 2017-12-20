@@ -1,0 +1,15 @@
+<launch>
+  <arg name="kinova_robotType"       default="$(optenv KINOVA_ARM j2s7s300)"/>
+  <arg name="initial_pose"           default="-x 0.0 -y 0.0 - z 0.0 -Y 0.0"/>
+
+  <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find kinova_description)/urdf/$(arg kinova_robotType)_standalone.xacro'"/>
+
+  <!-- start up the gazebo setup with given robot description -->
+  <node name="spawn_kinova" pkg="gazebo_ros" type="spawn_model"
+      args="-unpause -urdf -param robot_description -model $(arg kinova_robotType) $(arg initial_pose)">
+      <!--remap from="joint_states"      to="$(arg base_prefix)/joint_states"/-->
+  </node>
+
+	<!-- robot state publisher launched as part of kinova_control -->
+
+</launch>

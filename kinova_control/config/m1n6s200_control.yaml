@@ -1,4 +1,4 @@
-m1n6s200:
+m1n6s200_driver:
   effort_finger_trajectory_controller:
     constraints:
       goal_time: 1.0
