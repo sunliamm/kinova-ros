@@ -92,6 +92,34 @@
    </xacro:unless>
   </xacro:macro>
 
+  <!-- continuous joints do not have joint limits -->
+	<xacro:macro name="kinova_continuous_armjoint" params="joint_name type parent child joint_axis_xyz joint_origin_xyz joint_origin_rpy fixed:=false">
+    <joint name="${joint_name}" type="${type}">
+        <parent link="${parent}"/>
+        <child link="${child}"/>
+        <axis xyz="${joint_axis_xyz}"/>
+        <limit effort="60" velocity="6.28" />
+        <origin xyz="${joint_origin_xyz}" rpy="${joint_origin_rpy}"/>
+        <dynamics damping="1.7" friction="0.0"/>
+     </joint>
+   <xacro:unless value="${fixed}">
+     <gazebo reference="${joint_name}">
+        <implicitSpringDamper>1</implicitSpringDamper>
+     </gazebo>
+
+     <transmission name="${joint_name}_trans">
+        <type>transmission_interface/SimpleTransmission</type>
+        <joint name="${joint_name}">
+          <hardwareInterface>EffortJointInterface</hardwareInterface>
+        </joint>
+        <actuator name="${joint_name}_actuator">
+          <hardwareInterface>EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>160</mechanicalReduction>
+        </actuator>
+     </transmission>
+   </xacro:unless>
+  </xacro:macro>
+
 
     <xacro:macro name="kinova_virtual_link" params="link_name">
         <link name="${link_name}">
