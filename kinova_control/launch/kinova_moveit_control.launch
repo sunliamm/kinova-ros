@@ -1,5 +1,5 @@
 <launch>
-  <arg name="robot_name"  default="$(optenv KINOVA_ARM j2s7s300)"/>
+  <arg name="robot_name"  default="$(optenv KINOVA_ARM m1n6s200)"/>
 
   <!-- Load joint controller configurations from YAML file to parameter server -->
   <rosparam file="$(find kinova_control)/config/$(arg robot_name)_moveit_control.yaml" command="load"/>

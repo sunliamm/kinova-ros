@@ -5,22 +5,10 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /Global Options1
-        - /RobotModel1
-        - /RobotModel1/Links1
-        - /RobotModel1/Links1/m1n6a200_end_effector1
-        - /RobotModel1/Links1/m1n6a200_link_11
-        - /RobotModel1/Links1/m1n6a200_link_21
-        - /RobotModel1/Links1/m1n6a200_link_31
-        - /RobotModel1/Links1/m1n6a200_link_41
-        - /RobotModel1/Links1/m1n6a200_link_51
-        - /RobotModel1/Links1/m1n6a200_link_61
-        - /RobotModel1/Links1/m1n6a200_link_base1
-        - /RobotModel1/Links1/m1n6a200_link_finger_11
-        - /RobotModel1/Links1/m1n6a200_link_finger_21
-        - /RobotModel1/Links1/m1n6a200_link_finger_tip_11
-        - /RobotModel1/Links1/m1n6a200_link_finger_tip_21
+        - /RobotModel1/Links1/m1n6s200_link_51
+        - /RobotModel1/Links1/m1n6s200_link_61
+        - /RobotModel1/Links1/m1n6s200_link_base1
         - /RobotModel1/Links1/root1
-        - /Axes1
       Splitter Ratio: 0.5
     Tree Height: 565
   - Class: rviz/Selection
@@ -73,64 +61,63 @@ Visualization Manager:
         Expand Link Details: true
         Expand Tree: false
         Link Tree Style: Links in Alphabetic Order
-        m1n6a200_end_effector:
+        m1n6s200_end_effector:
+          Alpha: 1
+          Show Axes: true
+          Show Trail: false
+        m1n6s200_link_1:
           Alpha: 1
           Show Axes: true
           Show Trail: false
           Value: true
-        m1n6a200_link_1:
+        m1n6s200_link_2:
           Alpha: 1
           Show Axes: true
           Show Trail: false
           Value: true
-        m1n6a200_link_2:
+        m1n6s200_link_3:
           Alpha: 1
           Show Axes: true
           Show Trail: false
           Value: true
-        m1n6a200_link_3:
+        m1n6s200_link_4:
           Alpha: 1
           Show Axes: true
           Show Trail: false
           Value: true
-        m1n6a200_link_4:
+        m1n6s200_link_5:
           Alpha: 1
           Show Axes: true
           Show Trail: false
           Value: true
-        m1n6a200_link_5:
+        m1n6s200_link_6:
           Alpha: 1
           Show Axes: true
           Show Trail: false
           Value: true
-        m1n6a200_link_6:
+        m1n6s200_link_base:
           Alpha: 1
           Show Axes: true
           Show Trail: false
           Value: true
-        m1n6a200_link_base:
+        m1n6s200_link_finger_1:
           Alpha: 1
-          Show Axes: true
+          Show Axes: false
           Show Trail: false
           Value: true
-        m1n6a200_link_finger_1:
+        m1n6s200_link_finger_2:
           Alpha: 1
-          Show Axes: true
+          Show Axes: false
           Show Trail: false
           Value: true
-        m1n6a200_link_finger_2:
+        m1n6s200_link_finger_tip_1:
           Alpha: 1
-          Show Axes: true
+          Show Axes: false
           Show Trail: false
           Value: true
-        m1n6a200_link_finger_tip_1:
+        m1n6s200_link_finger_tip_2:
           Alpha: 1
-          Show Axes: true
-          Show Trail: false
-          Value: true
-        m1n6a200_link_finger_tip_2:
-          Alpha: 1
-          Show Axes: true
+          Show Axes: false
           Show Trail: false
           Value: true
         root:
@@ -138,6 +125,10 @@ Visualization Manager:
           Show Axes: true
           Show Trail: false
           Value: true
+        world:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
       Name: RobotModel
       Robot Description: robot_description
       TF Prefix: ""
@@ -175,24 +166,24 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 1.5690062
+      Distance: 2.46886158
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -0.627075016
-        Y: 0.445460677
-        Z: 0.668080628
+        X: -0.550808191
+        Y: 0.098404713
+        Z: 0.645197034
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.0500000007
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Pitch: 0.234798163
+      Pitch: -0.140201852
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 6.03858566
+      Yaw: 0.225405291
     Saved: ~
 Window Geometry:
   Displays:
@@ -210,5 +201,5 @@ Window Geometry:
   Views:
     collapsed: true
   Width: 1695
-  X: 396
+  X: 225
   Y: 103
