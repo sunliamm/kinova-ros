@@ -44,8 +44,13 @@ link_directories(${catkin_LIBRARY_DIRS})
 include_directories(${kinova_driver_INCLUDE_DIRS})
 
 
-add_executable(pick_server src/pick_server.cpp include/pick_place.h)
-target_link_libraries(pick_server ${catkin_LIBRARIES} ${Boost_LIBRARIES} ${kinova_driver_LIBRARIES})
-install(TARGETS pick_server DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+add_library(manipulation_lib src/manipulation.cpp include/manipulation.h)
+target_link_libraries(manipulation_lib ${catkin_LIBRARIES} ${Boost_LIBRARIES} ${kinova_driver_LIBRARIES})
+install(TARGETS manipulation_lib DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+
+add_executable(pick_test src/pick_test.cpp)
+target_link_libraries(pick_test manipulation_lib ${catkin_LIBRARIES} ${Boost_LIBRARIES} ${kinova_driver_LIBRARIES})
+install(TARGETS pick_test DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+
 
 

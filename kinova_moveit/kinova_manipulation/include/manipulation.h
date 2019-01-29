@@ -30,15 +30,17 @@
 
 namespace kinova
 {
-
-
-    class PickPlace
+    class Manipulation
     {
     public:
-        PickPlace(ros::NodeHandle &nh);
-        ~PickPlace();
+        Manipulation(ros::NodeHandle &nh);
+        ~Manipulation();
 
-
+	    bool send_home();
+        bool my_pick();
+        bool my_place();
+        bool gripper_action(std::string command);
+	    void define_cartesian_pose(geometry_msgs::PoseStamped request_pose, std::string grasp_type, double angle);
 
     private:
         ros::NodeHandle nh_;
@@ -49,7 +51,7 @@ namespace kinova
         moveit::planning_interface::MoveGroupInterface* group_;
         moveit::planning_interface::MoveGroupInterface* gripper_group_;
         robot_model::RobotModelPtr robot_model_;
-//        robot_state::RobotStatePtr robot_state_;
+        // robot_state::RobotStatePtr robot_state_;
 
         planning_scene::PlanningScenePtr planning_scene_;
         planning_scene_monitor::PlanningSceneMonitorPtr planning_scene_monitor_;
@@ -86,7 +88,6 @@ namespace kinova
         sensor_msgs::JointState current_state_;
         geometry_msgs::PoseStamped current_pose_;
 
-
         // define pick_place joint value and pose
         std::vector<double> start_joint_;
         std::vector<double> grasp_joint_;
@@ -109,13 +110,9 @@ namespace kinova
         void add_target();
 
         void define_joint_values();
-        void define_cartesian_pose();
         geometry_msgs::PoseStamped generate_gripper_align_pose(geometry_msgs::PoseStamped targetpose_msg, double dist, double azimuth, double polar, double rot_gripper_z);
         void setup_constrain(geometry_msgs::Pose target_pose, bool orientation, bool position);
         void check_constrain();
-
-        bool my_pick();
-        bool my_place();
 
         void get_current_state(const sensor_msgs::JointStateConstPtr &msg);
         void get_current_pose(const geometry_msgs::PoseStampedConstPtr &msg);
@@ -123,7 +120,6 @@ namespace kinova
         void getInvK(geometry_msgs::Pose &eef_pose, std::vector<double> &joint_value);
         void check_collision();
         void evaluate_plan(moveit::planning_interface::MoveGroupInterface &group);
-        bool gripper_action(double gripper_rad);
     };
 }
 
