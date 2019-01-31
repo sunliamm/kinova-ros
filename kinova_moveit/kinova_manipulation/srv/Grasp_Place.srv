@@ -1,7 +1,0 @@
-geometry_msgs/Pose[] poses
-float64 griper_angle
-float64 offset_minus
-float64 offset_plus
-string grasp_type
----
-string error

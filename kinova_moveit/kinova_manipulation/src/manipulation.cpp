@@ -25,9 +25,10 @@ tf::Quaternion EulerZYZ_to_Quaternion(double tz1, double ty, double tz2)
     return q;
 }
 
-Manipulation::Manipulation(ros::NodeHandle &nh):nh_(nh)
+//Manipulation::Manipulation(ros::NodeHandle &nh):nh_(nh)
+Manipulation::Manipulation()
 {
-    ros::NodeHandle pn("~");
+    ros::NodeHandle nh_("~");
 
     nh_.param<std::string>("/robot_type",robot_type_,"j2n6s300");
     nh_.param<bool>("/robot_connected",robot_connected_,true);
@@ -190,7 +191,7 @@ void Manipulation::build_workscene()
     ros::WallDuration(0.1).sleep();}
 
 
-void Manipulation::define_cartesian_pose(geometry_msgs::PoseStamped request_pose, std::string grasp_type, double grasp_angle)
+void Manipulation::define_pick_pose(geometry_msgs::PoseStamped request_pose, std::string grasp_type, double grasp_angle, double offset_plus)
 {
     tf::Quaternion q;
 
@@ -224,12 +225,46 @@ void Manipulation::define_cartesian_pose(geometry_msgs::PoseStamped request_pose
     grasp_pose_.pose.orientation.w = q.w();
 
     // generate_pregrasp_pose(double dist, double azimuth, double polar, double rot_gripper_z)
-    grasp_pose_= generate_gripper_align_pose(grasp_pose_, 0.03999, eular_z, eular_x, eular_y);
+    grasp_pose_= generate_gripper_align_pose(grasp_pose_, 0.04, eular_z, eular_x, eular_y);
     pregrasp_pose_ = generate_gripper_align_pose(grasp_pose_, 0.1, eular_z, eular_x, eular_y);
     postgrasp_pose_ = grasp_pose_;
-    postgrasp_pose_.pose.position.z = grasp_pose_.pose.position.z + 0.05;
+    postgrasp_pose_.pose.position.z = grasp_pose_.pose.position.z + offset_plus;
 }
 
+
+void Manipulation::define_place_pose(geometry_msgs::PoseStamped request_pose, std::string grasp_type, double grasp_angle)
+{
+    tf::Quaternion q;
+
+    // define grasp pose
+    place_pose_.header.frame_id = "root";
+    place_pose_.header.stamp  = ros::Time::now();
+
+    // Euler_ZYZ (-M_PI/4, M_PI/2, M_PI/2)
+    place_pose_.pose.position.x = request_pose.pose.position.x;
+    place_pose_.pose.position.y = request_pose.pose.position.y;
+    place_pose_.pose.position.z = request_pose.pose.position.z;
+
+    double eular_x, eular_y, eular_z;
+
+    if(grasp_type == "VERT")
+        eular_x = M_PI;
+    else if(grasp_type == "HORZ")
+        eular_x = M_PI/2;
+    else
+        std::cout << "Incorrect grasp type!" << std::endl;
+
+    // the inplane rotation of gripper
+    eular_z = grasp_angle;
+
+    eular_y = M_PI;
+
+    q = EulerZYZ_to_Quaternion(eular_x, eular_y, eular_z);
+    place_pose_.pose.orientation.x = q.x();
+    place_pose_.pose.orientation.y = q.y();
+    place_pose_.pose.orientation.z = q.z();
+    place_pose_.pose.orientation.w = q.w();
+}
 
 /**
  * @brief Manipulation::generate_gripper_align_pose
@@ -283,10 +318,10 @@ void Manipulation::evaluate_plan(moveit::planning_interface::MoveGroupInterface 
 
         // try to find a success plan.
         double plan_time;
-        while (result_ == false && count < 5)
+        while (result_ == false && count < 2)
         {
             count++;
-            plan_time = 20+count*10;
+            plan_time = 5+count*1;
             ROS_INFO("Setting plan time to %f sec", plan_time);
             group.setPlanningTime(plan_time);
 
@@ -336,19 +371,11 @@ bool Manipulation::send_home()
     return true;
 }
 
-bool Manipulation::my_pick()
+bool Manipulation::pick()
 {
     ros::WallDuration(1.0).sleep();
-    ///////////////////////////////////////////////////////////
-    //// Cartesian space without obstacle
-    ///////////////////////////////////////////////////////////
-    ROS_INFO_STREAM("*************************");
-    ROS_INFO_STREAM("*************************");
-    ROS_INFO_STREAM("*************************");
-    ROS_INFO_STREAM("Motion planning in cartesian space without obstacles ...");
     //clear_workscene();
     //build_workscene();
-    ros::WallDuration(0.1).sleep();
 
     ROS_INFO_STREAM("Planning to go to pre-grasp position ...");
     group_->setPoseTarget(pregrasp_pose_);
@@ -363,18 +390,21 @@ bool Manipulation::my_pick()
     ROS_INFO_STREAM("Grasping ...");
     gripper_action("close"); // partially close
 
-
-    group_->setNamedTarget("Home");
+    group_->setPoseTarget(postgrasp_pose_);
     evaluate_plan(*group_);
 
+    return true;
+}
+
+bool Manipulation::place()
+{
+    ROS_INFO_STREAM("Planning to go to place position ...");
+    group_->setPoseTarget(place_pose_);
+    evaluate_plan(*group_);
 
     ROS_INFO_STREAM("Releasing gripper ...");
+    gripper_action("open");
 
-    //gripper_action(0.0); // full open
-
-    //clear_workscene();
-    ROS_INFO_STREAM("Press any key to quit ...");
-   // std::cin >> pause_;
     return true;
 }
 

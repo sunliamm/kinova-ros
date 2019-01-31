@@ -33,14 +33,15 @@ namespace kinova
     class Manipulation
     {
     public:
-        Manipulation(ros::NodeHandle &nh);
+        Manipulation();//ros::NodeHandle &nh
         ~Manipulation();
 
 	    bool send_home();
-        bool my_pick();
-        bool my_place();
+        bool pick();
+        bool place();
         bool gripper_action(std::string command);
-	    void define_cartesian_pose(geometry_msgs::PoseStamped request_pose, std::string grasp_type, double angle);
+	    void define_pick_pose(geometry_msgs::PoseStamped request_pose, std::string grasp_type, double angle, double offset_plus);
+        void define_place_pose(geometry_msgs::PoseStamped request_pose, std::string grasp_type, double angle);
 
     private:
         ros::NodeHandle nh_;
@@ -99,6 +100,7 @@ namespace kinova
         geometry_msgs::PoseStamped can_pose_;
         geometry_msgs::PoseStamped pregrasp_pose_;
         geometry_msgs::PoseStamped postgrasp_pose_;
+        geometry_msgs::PoseStamped place_pose_;
 
 
         void build_workscene();

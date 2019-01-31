@@ -1,0 +1,10 @@
+geometry_msgs/PoseStamped pick_pose
+geometry_msgs/PoseStamped place_pose
+float64 gripper_direction
+float64 offset_minus
+float64 offset_plus
+string pick_type
+bool is_place
+bool is_home
+---
+bool result
